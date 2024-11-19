@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo-container
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - three-tier-net
+
+  backend:
+    container_name: server
+    build: 
+      context: server/
+    image: server-image
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/e-com
+    depends_on:
+      - mongo
+    volumes:
+      - "./server:/app"
+    networks:
+      - three-tier-net
+
+  frontend:
+    container_name: client
+    build: 
+      context: client/
+    image: client-image
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - three-tier-net
+
+networks:
+  three-tier-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+

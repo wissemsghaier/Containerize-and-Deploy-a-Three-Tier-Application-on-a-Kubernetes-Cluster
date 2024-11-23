@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: three-tier
+  name: mongo-secret
+type: Opaque
+data:
+  MONGO_USER: bXlVc2Vy          # "myUser" encodé en base64
+  MONGO_PASSWORD: bXlQYXNzd29yZA==  # "myPassword" encodé en base64
+

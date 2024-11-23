@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: three-tier
+  name: mongo-config
+data:
+  database_url: mongodb-svc
+  MONGO_HOST: mongodb-svc                  # Hôte
+  MONGO_PORT: "27017"                # Port
+  MONGO_DB: e-com
+  
+

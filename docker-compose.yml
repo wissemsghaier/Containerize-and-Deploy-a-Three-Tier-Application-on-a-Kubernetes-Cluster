@@ -2,12 +2,20 @@ version: '3'
 
 services:
   mongo:
-    image: mongo
     container_name: mongo-container
+    build: 
+      context: database/
+    image: mongodb-image
+    
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+      - ./server/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js  # Monté depuis server/
+    environment:
+      MONGO_USER: myUser
+      MONGO_PASSWORD: myPassword
+      MONGO_DB: e-com
     networks:
       - three-tier-net
 
@@ -19,7 +27,12 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb://mongo:27017/e-com
+      MONGO_USER: myUser
+      MONGO_PASSWORD: myPassword
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_DB: e-com 
+
     depends_on:
       - mongo
     volumes:

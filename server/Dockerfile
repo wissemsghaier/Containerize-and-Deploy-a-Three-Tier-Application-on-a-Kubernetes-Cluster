@@ -10,9 +10,13 @@ COPY package*.json ./
 # Install dependencies
 
 
+
 RUN npm install --legacy-peer-deps
 
 RUN npm install --save-dev nodemon
+
+RUN npm install dotenv --save
+RUN npm install cors
 
 
 # Copy the application source code

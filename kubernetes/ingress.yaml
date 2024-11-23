@@ -1,0 +1,46 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-ingress
+  namespace: three-tier
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+spec:
+  rules:
+  - host: frontend.yourdomain.com  # Nom de domaine pour le frontend
+    http:
+      paths:
+      - path: /  # Chemin pour le frontend
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service  # Nom du service frontend
+            port:
+              number: 3000  # Port exposé par le service frontend
+      - path: /healthz
+        pathType: Exact
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 3000
+      - path: /ready
+        pathType: Exact
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 3000
+  - host: backend.yourdomain.com  # Nom de domaine pour le backend
+    http:
+      paths:
+      - path: /product  # Chemin pour accéder au backend pour le produit
+        pathType: Prefix
+        backend:
+          service:
+            name: backend-service  # Nom du service backend
+            port:
+              number: 5000  # Port exposé par le service backend

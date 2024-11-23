@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: three-tier
+spec:
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000 #Port du container frontend
+  type: ClusterIP
+
+
+
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: frontend-service
+#   namespace: three-tier
+# spec:
+#   selector:
+#     app: frontend
+#   ports:
+#     - protocol: TCP
+#       port: 3000            # Port utilisé par les clients pour accéder au frontend
+#       targetPort: 3000      # Port exposé par le conteneur frontend
+#       nodePort: 32000       # Port exposé sur le nœud (entre 30000-32767)
+#   type: NodePort            # Permet l'accès depuis l'extérieur du cluster
